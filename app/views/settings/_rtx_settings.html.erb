@@ -1,0 +1,20 @@
+
+<fieldset>
+  <legend>RTX Plugin settings</legend>
+  <p>
+    <label>Notify when issue added.</label>
+    <%= check_box_tag 'settings[add_notify]', true, @settings[:add_notify] %>
+  </p>
+  <p>
+    <label>Notify when issue edited.</label>
+    <%= check_box_tag 'settings[edit_notify]', true, @settings[:edit_notify] %>
+  </p>
+  <p>
+    <label>RTX server url</label>
+    <%= text_field_tag 'settings[rtx_server_url]', @settings[:rtx_server_url] %>
+  </p>
+  <p>
+    <label>Login by RTX</label>
+    <%= check_box_tag 'settings[login_by_rtx]', true, @settings[:login_by_rtx] %>
+  </p>
+</fieldset>
