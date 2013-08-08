@@ -1,6 +1,6 @@
 <h2>Login by RTX</h2>
 <%= if params[:rtx]
-		loginUri = $rtx_hook.redmine_url(:controller => 'account', :action => 'login')
+		loginUri = $rtx_hook.redmine_url(:controller => 'account', :action => 'login', :back_url => params[:back_url])
 		param = { :title => 'Redmine Login', :msg => "[Click to Login|#{loginUri}|se]", :receiver => params[:rtx], :delaytime => 10000 }
 		res = RtxIssueHook.call_rtx('sendnotify.cgi', param)
 		res = Iconv.iconv('UTF-8', 'GB2312', res)
@@ -17,5 +17,6 @@
     <%= text_field_tag 'rtx', params[:rtx] %>
   </p>
 </fieldset>
+<%= back_url_hidden_field_tag %>
 <%= submit_tag l(:button_apply) %>
 <% end %>
