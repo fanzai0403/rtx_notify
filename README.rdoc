@@ -1,0 +1,6 @@
+= RTX Notify - Redmine Plugin
+
+* Notify user by RTX(http://rtx.qq.com), when issues added / edited.
+* Login automatically when click link in RTX.
+
+(To make this plugin works, users' account should match the RTX account or create a custom field named 'RTX'.)
