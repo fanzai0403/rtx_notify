@@ -23,16 +23,17 @@ class RtxIssueHook < Redmine::Hook::ViewListener
 		title = l(:label_issue_updated)
 		content = l(:text_issue_updated, :id => "##{issue.id}", :author => journal.user)
 		details_to_strings(journal.details, true).each do |string|
-			content += "\n　" + string
+			content += "\n  " + string
 		end
 		issueUrl = redmine_url(:controller => 'issues', :action => 'show', :id => issue, :anchor => "change-#{journal.id}")
 		send_rtx(issue, title, content, issueUrl)
 	end
 	
 	def send_rtx(issue, title, content, issueUrl)
-		userAry = [issue.assigned_to] | issue.watcher_users
+		userAry = ([issue.assigned_to] | issue.watcher_users).select{ |u| u.respond_to? :rtx }
+		return if userAry.empty?
 		rtxAry = userAry.map(&:rtx)
-		subject = "【#{issue.status.name}】 ##{issue.id} #{issue.subject}"
+		subject = issue_heading(issue)
 		loginUri = redmine_url(:controller => 'account', :action => 'login', :back_url => issueUrl)
 		
 		param = { :title => title, :msg => "[#{subject} |#{loginUri}|se]\n#{content}", :receiver => rtxAry * ',', :delaytime => 0 }
@@ -47,7 +48,7 @@ class RtxIssueHook < Redmine::Hook::ViewListener
 	
 	def self.call_rtx(page, param)
 		uri = URI.join(get_setting(:rtx_server_url), page)
-		# ruby 1.9.0 以前没有URI.encode_www_form，只能自己写
+		# URI.encode_www_form(...) is not available before ruby 1.9.0
 		uri.query = param.map do |k,v|
 				v = Iconv.iconv('GB2312', 'UTF-8', v.to_s)
 				v = URI.encode_www_form_component(v)

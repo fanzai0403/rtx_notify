@@ -2,7 +2,7 @@
 RedmineApp::Application.config.after_initialize do
 	class User
 		def rtx
-			field = custom_field_values.find{ |f| f.custom_field.name == 'RTX' }	#×Ô¶¨Òå×Ö¶Î'RTX'
+			field = custom_field_values.find{ |f| f.custom_field.name == 'RTX' }
 			field.nil? ? login : field.value
 		end
 		
