@@ -20,5 +20,5 @@ RedmineApp::Application.config.after_initialize do
 		end
 		
 		alias_method_chain :login, :rtx
-	end
+	end if defined? AccountController
 end
