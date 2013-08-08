@@ -12,7 +12,6 @@ Redmine::Plugin.register :rtx_notify do
   url 'http://web.4399.com'
   author_url 'mailto:zhangfan@4399.net'
   requires_redmine :version_or_higher => '2.3.0'
-  permission :login_by_rtx, { :login_by_rtx => [:index] }, :public => true
   menu	:account_menu,
 		:login_by_rtx,
 		{ :controller => 'account', :action => 'login_by_rtx'},
