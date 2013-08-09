@@ -35,9 +35,14 @@ class RtxIssueHook < Redmine::Hook::ViewListener
 		rtxAry = userAry.map(&:rtx)
 		subject = to_rtx_str(issue_heading(issue))
 		content = to_rtx_str(content)
-		loginUri = redmine_url(:controller => 'account', :action => 'login', :back_url => issueUrl)
+		msg = if (RtxIssueHook.get_setting(:login_by_rtx))
+				loginUri = redmine_url(:controller => 'account', :action => 'login', :back_url => issueUrl)
+				"[#{subject} |#{loginUri}|se]\n#{content}"
+			else
+				"[#{subject} |#{issueUrl}]\n#{content}"
+			end
 		
-		param = { :title => title, :msg => "[#{subject} |#{loginUri}|se]\n#{content}", :receiver => rtxAry * ',', :delaytime => 0 }
+		param = { :title => title, :msg => msg, :receiver => rtxAry * ',', :delaytime => 0 }
 		self.class.call_rtx('sendnotify.cgi', param)
 	end
 	
