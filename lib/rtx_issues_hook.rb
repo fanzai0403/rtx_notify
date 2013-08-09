@@ -33,7 +33,8 @@ class RtxIssueHook < Redmine::Hook::ViewListener
 		userAry = ([issue.assigned_to] | issue.watcher_users).select{ |u| u.respond_to? :rtx }
 		return if userAry.empty?
 		rtxAry = userAry.map(&:rtx)
-		subject = issue_heading(issue)
+		subject = to_rtx_str(issue_heading(issue))
+		content = to_rtx_str(content)
 		loginUri = redmine_url(:controller => 'account', :action => 'login', :back_url => issueUrl)
 		
 		param = { :title => title, :msg => "[#{subject} |#{loginUri}|se]\n#{content}", :receiver => rtxAry * ',', :delaytime => 0 }
@@ -50,14 +51,14 @@ class RtxIssueHook < Redmine::Hook::ViewListener
 		uri = URI.join(get_setting(:rtx_server_url), page)
 		# URI.encode_www_form(...) is not available before ruby 1.9.0
 		uri.query = param.map do |k,v|
-				v = Iconv.iconv('GB2312', 'UTF-8', v.to_s)
+				v = iconv('GB2312', 'UTF-8', v.to_s)
 				v = URI.encode_www_form_component(v)
 				"#{k}=#{v}"
 			end.join('&')
 		Rails.logger.info "RTX_GET: #{uri.to_s}"
 		res = Net::HTTP.get_response(uri)
 		Rails.logger.info "RTX_RESPONSE: #{res.code} #{res.message}"
-		res.body
+		iconv('UTF-8', 'GB2312', res.body)
 	end
 	
 	def self.plugin
@@ -78,5 +79,22 @@ class RtxIssueHook < Redmine::Hook::ViewListener
 	  rescue
 	    nil
 	  end
+	end
+	
+	def to_rtx_str(str)
+		str.sub! '[', '{'
+		str.sub! ']', '}'
+		str.sub! '<', '{'
+		str.sub! '>', '}'
+		str.sub! '|', '!'
+		str
+	end
+	
+	def self.iconv(to, from, str)
+		if str.respond_to?(:encode)	# for Ruby ver. 1.9.0 and above
+			str.encode(to, from)
+		else
+			Iconv.conv(to, from, str)
+		end
 	end
 end
