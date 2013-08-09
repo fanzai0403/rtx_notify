@@ -1,6 +1,22 @@
 = RTX Notify - Redmine Plugin
 
+== Feature
+
 * Notify user by RTX(http://rtx.qq.com), when issues added / edited.
 * Login automatically when click link in RTX.
 
-To make this plugin works, users' account should match the RTX account or create a custom field named 'RTX'.
+== Usage
+
+To make this plugin works:
+* Users' account (login) should match the RTX account.
+* Or else, create a user custom field(text format) named 'RTX'.
+* Make users' RTX account right.
+* Check the plugin setting and fill the rtx server url of your company.
+
+== What is RTX?
+
+RTX is an IM software(like MSN, ICQ, etc.) specially for compnay use.
+And it's quite familiar in chinese IT companies.
+
+RTX Home page: http://rtx.qq.com
+
