@@ -8,10 +8,10 @@ Redmine::Plugin.register :rtx_notify do
   name 'Redmine RTX Notify plugin'
   author 'Zhang Fan'
   description 'Notify user by RTX(rtx.qq.com), when issues added / edited.'
-  version '0.0.1'
+  version '0.1.0'
   url 'http://web.4399.com'
   author_url 'mailto:zhangfan@4399.net'
-  requires_redmine :version_or_higher => '2.3.0'
+  requires_redmine :version_or_higher => '2.0.0'
   menu	:account_menu,
 		:login_by_rtx,
 		{ :controller => 'account', :action => 'login_by_rtx'},
