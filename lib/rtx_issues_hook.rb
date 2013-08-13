@@ -33,7 +33,9 @@ class RtxIssueHook < Redmine::Hook::ViewListener
 		userAry = ([issue.assigned_to] | issue.watcher_users).select{ |u| u.respond_to? :rtx }
 		return if userAry.empty?
 		rtxAry = userAry.map(&:rtx)
-		subject = to_rtx_str(issue_heading(issue))
+		# Modify these liens yourself to change the title style.
+		#subject = to_rtx_str(issue_heading(issue))
+		subject = to_rtx_str("(#{issue.status.name}) ##{issue.id} #{issue.subject}")
 		content = to_rtx_str(content)
 		msg = if (RtxIssueHook.get_setting(:login_by_rtx))
 				loginUri = redmine_url(:controller => 'account', :action => 'login', :back_url => issueUrl)
