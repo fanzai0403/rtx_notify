@@ -22,7 +22,7 @@ Redmine::Plugin.register :rtx_notify do
     :add_notify                      => true,
     :edit_notify                     => true,
     :login_by_rtx                    => true,
-    :rtx_server_url                  => 'http://rtx.me4399.com:8012/'
+    :rtx_server_url                  => 'http://your.rtx.server:8012/'
   }, :partial => 'settings/rtx_settings'
 end
 
