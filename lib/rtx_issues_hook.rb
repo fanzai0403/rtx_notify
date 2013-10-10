@@ -25,6 +25,8 @@ class RtxIssueHook < Redmine::Hook::ViewListener
 		details_to_strings(journal.details, true).each do |string|
 			content += "\n  " + string
 		end
+		content += "\n" + journal.notes if journal.notes?
+		
 		issueUrl = redmine_url(:controller => 'issues', :action => 'show', :id => issue, :anchor => "change-#{journal.id}")
 		send_rtx(issue, title, content, issueUrl)
 	end
