@@ -103,7 +103,7 @@ class RtxIssueHook < Redmine::Hook::ViewListener
 		if str.respond_to?(:encode)	# for Ruby ver. 1.9.0 and above
 			str.encode(to, from)
 		else
-			Iconv.conv(to, from, str)
+			Iconv.conv(to+'//IGNORE', from, str)
 		end
 	end
 end
