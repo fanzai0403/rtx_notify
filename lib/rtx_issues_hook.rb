@@ -101,9 +101,9 @@ class RtxIssueHook < Redmine::Hook::ViewListener
 	
 	def self.iconv(to, from, str)
 		if str.respond_to?(:encode)	# for Ruby ver. 1.9.0 and above
-			str.encode(to, from)
+			str.encode('GBK', from)
 		else
-			Iconv.conv(to, from, str)
+			Iconv.conv(to+'//IGNORE', from, str)
 		end
 	end
 end
